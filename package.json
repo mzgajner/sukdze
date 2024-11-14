@@ -1,0 +1,35 @@
+{
+  "name": "sugcje",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "bunx vite --open",
+    "build": "bunx vue-tsc && bunx vite build",
+    "preview": "bunx vite preview",
+    "encrypt-hints": "bun src/encrypt-hints.ts",
+    "format": "bunx prettier . --write"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@vueuse/core": "^11.2.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.13",
+    "@vitejs/plugin-vue": "^5.2.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vue-tsc": "^2.1.10"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  }
+}
