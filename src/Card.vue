@@ -1,31 +1,38 @@
 <script lang="ts" setup>
 import Button from './Button.vue'
-import { nextTick, ref, useTemplateRef } from 'vue'
+import { nextTick, useTemplateRef, watch } from 'vue'
 
-defineProps<{
+const { editing } = defineProps<{
+  editing: boolean
   card: {
     original: string
     translation: string
   }
 }>()
 
-const editing = ref(false)
+defineExpose({ setFocusToOriginal })
+
+const emit = defineEmits<{ startEditing: []; stopEditing: []; delete: [] }>()
+
 const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
 
-async function startEditing() {
-  editing.value = true
-  await nextTick()
+function setFocusToTranslation() {
+  translationInputElement.value?.focus()
+}
+function setFocusToOriginal() {
   originalInputElement.value?.focus()
 }
 
-function stopEditing() {
-  editing.value = false
-}
-
-function moveFocusToTranslation() {
-  translationInputElement.value?.focus()
-}
+watch(
+  () => editing,
+  async (newEditingValue) => {
+    if (newEditingValue !== true) return
+    await nextTick()
+    setFocusToOriginal()
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -38,7 +45,7 @@ function moveFocusToTranslation() {
           v-model="card.original"
           class="rounded px-1"
           placeholder="Original"
-          @keydown.enter="moveFocusToTranslation"
+          @keydown.enter="setFocusToTranslation"
         />
         <input
           lang="ko-KR"
@@ -46,7 +53,7 @@ function moveFocusToTranslation() {
           v-model="card.translation"
           class="rounded px-1"
           placeholder="Translation"
-          @keydown.enter="stopEditing"
+          @keydown.enter="emit('stopEditing')"
         />
       </div>
       <div class="flex flex-col gap-2">
@@ -55,16 +62,26 @@ function moveFocusToTranslation() {
           label="Delete"
           size="sm"
           variant="danger"
-          @click="stopEditing"
+          @click="$emit('delete')"
         />
-        <Button icon="floppyDisk" label="Save" size="sm" @click="stopEditing" />
+        <Button
+          icon="floppyDisk"
+          label="Save"
+          size="sm"
+          @click="$emit('stopEditing')"
+        />
       </div>
     </div>
     <div v-else class="flex items-end">
       <div class="flex-1 pl-1">
         {{ card.original }} - {{ card.translation }}
       </div>
-      <Button icon="penToSquare" label="Edit" size="sm" @click="startEditing" />
+      <Button
+        icon="penToSquare"
+        label="Edit"
+        size="sm"
+        @click="$emit('startEditing')"
+      />
     </div>
   </div>
 </template>

@@ -4,12 +4,14 @@ import {
   faPenToSquare,
   faFloppyDisk,
   faTrashCan,
+  faSquarePlus,
 } from '@fortawesome/free-regular-svg-icons'
 
 const icons = {
   penToSquare: faPenToSquare,
   floppyDisk: faFloppyDisk,
   trashCan: faTrashCan,
+  squarePlus: faSquarePlus,
 }
 
 export type SupportedIconName = keyof typeof icons

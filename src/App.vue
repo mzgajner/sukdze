@@ -1,17 +1,48 @@
 <script setup lang="ts">
+import { Ref, ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 
-import Header from './Header.vue'
 import Card from './Card.vue'
+import Header from './Header.vue'
 
-const appData = useStorage('sukdzeData', {
-  cards: {
-    'db7773c1-bf41-4f7d-b285-dbf35688c5ec': {
-      original: 'bla bla bla',
-      translation: 'ha ha ha',
+type AppData = {
+  cards: Record<
+    string,
+    {
+      original: string
+      translation: string
+    }
+  >
+}
+
+const editingCard = ref<string | null>(null)
+const appData: Ref<AppData> = useStorage(
+  'sukdzeData',
+  {
+    cards: {
+      'db7773c1-bf41-4f7d-b285-dbf35688c5ec': {
+        original: 'bla bla bla',
+        translation: 'ha ha ha',
+      },
     },
   },
-})
+  undefined,
+  { deep: true },
+)
+
+function addNewCard() {
+  const newCardId = crypto.randomUUID()
+  appData.value.cards[newCardId] = {
+    original: '',
+    translation: '',
+  }
+  editingCard.value = newCardId
+  console.log(appData.value)
+}
+
+function deleteCard(cardId: string) {
+  delete appData.value.cards[cardId]
+}
 </script>
 
 <template>
@@ -21,10 +52,19 @@ const appData = useStorage('sukdzeData', {
       <Card
         v-for="(card, cardId) in appData.cards"
         :card="card"
-        class="w-full"
+        :editing="editingCard === cardId"
+        @start-editing="editingCard = cardId"
+        @stop-editing="editingCard = null"
+        @delete="deleteCard(cardId)"
+        class="w-full mb-2"
       />
+      <div
+        class="text-lg text-gray-600 flex items-center pl-1 justify-center border py-1 border-gray-400 rounded"
+        @click="addNewCard"
+      >
+        Add new card
+      </div>
     </div>
-    <Footer />
   </main>
 </template>
 
