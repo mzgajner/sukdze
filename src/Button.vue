@@ -5,11 +5,18 @@ import Icon, { type SupportedIconName } from './Icon.vue'
 type Variant = 'primary' | 'danger'
 type Size = 'sm' | 'lg'
 
-const { size = 'lg', variant = 'primary' } = defineProps<{
+const {
+  size = 'lg',
+  variant = 'primary',
+  iconAfter = false,
+  disabled = false,
+} = defineProps<{
   icon?: SupportedIconName
   label: string
   size?: Size
   variant?: Variant
+  iconAfter?: boolean
+  disabled?: boolean
 }>()
 
 const dynamicClasses = computed(() => {
@@ -24,12 +31,17 @@ const dynamicClasses = computed(() => {
     lg: ['py-2', 'px-4', 'text-sm'],
   }[size]
 
-  return [...variantClasses, ...sizeClasses]
+  const disabledClasses = disabled
+    ? ['cursor-not-allowed', 'pointer-events-none', 'opacity-50']
+    : []
+
+  return [...variantClasses, ...sizeClasses, ...disabledClasses]
 })
 </script>
 <template>
   <button class="text-white rounded whitespace-nowrap" :class="dynamicClasses">
-    <Icon v-if="icon" :name="icon" />
+    <Icon v-if="icon && !iconAfter" :name="icon" class="mr-1" />
     {{ label }}
+    <Icon v-if="icon && iconAfter" :name="icon" class="ml-1" />
   </button>
 </template>

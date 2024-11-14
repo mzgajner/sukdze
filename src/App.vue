@@ -3,7 +3,8 @@ import { Ref, ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 
 import Card from './Card.vue'
-import Header from './Header.vue'
+import StudyMode from './StudyMode.vue'
+import Button from './Button.vue'
 
 type AppData = {
   cards: Record<
@@ -21,8 +22,8 @@ const appData: Ref<AppData> = useStorage(
   {
     cards: {
       'db7773c1-bf41-4f7d-b285-dbf35688c5ec': {
-        original: 'bla bla bla',
-        translation: 'ha ha ha',
+        original: '숙제',
+        translation: 'Domača naloga',
       },
     },
   },
@@ -43,28 +44,43 @@ function addNewCard() {
 function deleteCard(cardId: string) {
   delete appData.value.cards[cardId]
 }
+
+const studying = ref(false)
 </script>
 
 <template>
-  <main class="flex flex-col items-stretch justify-center h-full">
-    <Header />
-    <div class="p-4 flex-1 shadow-inner">
-      <Card
-        v-for="(card, cardId) in appData.cards"
-        :card="card"
-        :editing="editingCard === cardId"
-        @start-editing="editingCard = cardId"
-        @stop-editing="editingCard = null"
-        @delete="deleteCard(cardId)"
-        class="w-full mb-2"
-      />
-      <div
-        class="text-lg text-gray-600 flex items-center pl-1 justify-center border py-1 border-gray-400 rounded"
-        @click="addNewCard"
-      >
-        Add new card
+  <main class="flex flex-col items-stretch justify-center h-screen">
+    <StudyMode
+      v-if="studying"
+      :cards="appData.cards"
+      @quit="studying = false"
+    />
+    <template v-else>
+      <div class="flex px-3 py-1 justify-between items-center">
+        <div class="text-lg text-center">Sukdze</div>
+        <Button size="sm" label="Study" @click="studying = true" />
       </div>
-    </div>
+
+      <div class="p-3 flex-1 shadow-inner overflow-y-scroll">
+        <div class="">
+          <Card
+            v-for="(card, cardId) in appData.cards"
+            :card="card"
+            :editing="editingCard === cardId"
+            @start-editing="editingCard = cardId"
+            @stop-editing="editingCard = null"
+            @delete="deleteCard(cardId)"
+            class="w-full mb-2"
+          />
+          <div
+            class="text-lg text-gray-600 flex items-center pl-1 justify-center border py-1 border-gray-400 rounded"
+            @click="addNewCard"
+          >
+            Add new card
+          </div>
+        </div>
+      </div>
+    </template>
   </main>
 </template>
 
