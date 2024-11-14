@@ -18,13 +18,5 @@
       "purpose": "maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "../screenshot-mobile.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Main Chat UI"
-    }
-  ]
+  "screenshots": []
 }
