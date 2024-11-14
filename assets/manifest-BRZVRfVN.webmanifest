@@ -1,0 +1,30 @@
+{
+  "name": "Sukdze",
+  "short_name": "Sukdze",
+  "start_url": "../",
+  "display": "standalone",
+  "background_color": "#cd2e3a",
+  "theme_color": "#cd2e3a",
+  "description": "Naredi si kartice za učenje korejščine.",
+  "icons": [
+    {
+      "src": "../icon.svg",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "../icon.svg",
+      "sizes": "any",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "../screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Main Chat UI"
+    }
+  ]
+}
