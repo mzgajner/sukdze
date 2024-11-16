@@ -41,7 +41,7 @@ async function previous() {
     <div class="card flex items-center justify-center px-8 flex-1">
       <div
         :key="currentPosition"
-        class="card-content text-3xl rounded-lg shadow-xl w-full aspect-square transition-transform duration-300 relative bg-yellow-50"
+        class="card-content text-3xl rounded-lg shadow-xl w-full aspect-square transition-transform duration-300 relative bg-yellow-500/10"
         :class="{
           flip: cardFlipped,
         }"
