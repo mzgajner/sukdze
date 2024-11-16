@@ -26,3 +26,7 @@ dist-ssr
 
 # Custom
 plaintext-hints.json
+
+# Auto-generated type declarations
+auto-imports.d.ts
+components.d.ts

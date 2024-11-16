@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Button from './Button.vue'
 import { nextTick, useTemplateRef, watch } from 'vue'
 
 const { editing } = defineProps<{
@@ -18,10 +17,10 @@ const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
 
 function setFocusToTranslation() {
-  translationInputElement.value?.focus()
+  translationInputElement.value?.inputRef?.focus()
 }
 function setFocusToOriginal() {
-  originalInputElement.value?.focus()
+  originalInputElement.value?.inputRef?.focus()
 }
 
 watch(
@@ -36,52 +35,53 @@ watch(
 </script>
 
 <template>
-  <div class="bg-gray-200 p-2 rounded-md">
-    <div v-if="editing" class="flex items-end">
-      <div class="flex-1 pr-2 flex gap-2 flex-col">
-        <input
-          lang="sl-SI"
-          ref="original"
-          v-model="card.original"
-          class="rounded px-1"
-          placeholder="Original"
-          @keydown.enter="setFocusToTranslation"
-        />
-        <input
-          lang="ko-KR"
-          ref="translation"
-          v-model="card.translation"
-          class="rounded px-1"
-          placeholder="Translation"
-          @keydown.enter="emit('stopEditing')"
-        />
-      </div>
-      <div class="flex flex-col gap-2">
-        <Button
-          icon="trashCan"
+  <UCard v-if="editing">
+    <div class="flex-1 flex gap-2 flex-col">
+      <UInput
+        lang="sl-SI"
+        ref="original"
+        v-model="card.original"
+        placeholder="Original"
+        @keydown.enter="setFocusToTranslation"
+      />
+      <UInput
+        lang="ko-KR"
+        ref="translation"
+        v-model="card.translation"
+        placeholder="Translation"
+        @keydown.enter="emit('stopEditing')"
+      />
+    </div>
+    <template #footer>
+      <div class="flex gap-2 justify-end">
+        <UButton
+          icon="i-ant-design:delete-twotone"
           label="Delete"
-          size="sm"
-          variant="danger"
+          variant="outline"
+          color="error"
+          class="rounded-lg"
           @click="$emit('delete')"
         />
-        <Button
-          icon="floppyDisk"
+        <UButton
+          icon="i-ant-design:save-twotone"
           label="Save"
-          size="sm"
           @click="$emit('stopEditing')"
         />
       </div>
-    </div>
-    <div v-else class="flex items-end">
-      <div class="flex-1 pl-1">
+    </template>
+  </UCard>
+  <UCard v-else>
+    <div class="flex">
+      <div class="flex-1 place-self-center">
         {{ card.original }} - {{ card.translation }}
       </div>
-      <Button
-        icon="penToSquare"
+      <UButton
+        icon="i-ant-design:edit-twotone"
         label="Edit"
         size="sm"
+        class="place-self-end"
         @click="$emit('startEditing')"
       />
     </div>
-  </div>
+  </UCard>
 </template>

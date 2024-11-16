@@ -1,11 +1,8 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import appData from '../storage'
 
 defineEmits<{ quit: [] }>()
-
-const { cards } = defineProps<{
-  cards: Record<string, { original: string; translation: string }>
-}>()
 
 function shuffleArray(array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -17,7 +14,7 @@ function shuffleArray(array: Array<any>) {
 }
 
 const shuffledCards = computed(() => {
-  const cardArray = Object.values(cards)
+  const cardArray = Object.values(appData.value.cards) || []
   shuffleArray(cardArray)
   return cardArray
 })
@@ -70,7 +67,7 @@ async function previous() {
         :disabled="currentPosition === 0"
         @click="previous"
       />
-      <UButton block label="Quit" color="error" to="/edit" />
+      <UButton block label="Quit" color="error" to="/edit" variant="outline" />
       <UButton
         block
         label="Next"
