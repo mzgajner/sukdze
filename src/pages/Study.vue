@@ -65,14 +65,23 @@ async function previous() {
         label="Previous"
         leading-icon="i-ant-design:left-circle-twotone"
         :disabled="currentPosition === 0"
+        size="xl"
         @click="previous"
       />
-      <UButton block label="Quit" color="error" to="/edit" variant="outline" />
+      <UButton
+        block
+        label="Quit"
+        color="error"
+        to="/edit"
+        variant="outline"
+        size="xl"
+      />
       <UButton
         block
         label="Next"
         trailing-icon="i-ant-design:right-circle-twotone"
         :disabled="currentPosition === shuffledCards.length - 1"
+        size="xl"
         @click="next"
       />
     </div>
