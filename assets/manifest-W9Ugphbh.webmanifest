@@ -3,8 +3,8 @@
   "short_name": "Sukdze",
   "start_url": "../",
   "display": "standalone",
-  "background_color": "#cd2e3a",
-  "theme_color": "#cd2e3a",
+  "background_color": "#8e51ff",
+  "theme_color": "#8e51ff",
   "description": "Naredi si kartice za učenje korejščine.",
   "icons": [
     {
@@ -24,7 +24,7 @@
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Main Chat UI"
+      "label": "Studying UI"
     }
   ]
 }
