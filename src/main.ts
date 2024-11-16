@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import nuxtUI from '@nuxt/ui/vue-plugin'
 
 import Edit from './pages/Edit.vue'
@@ -14,7 +14,7 @@ app.use(
       { path: '/edit', component: Edit },
       { path: '/study', component: Study },
     ],
-    history: createWebHistory(),
+    history: createWebHashHistory(),
   }),
 )
 
