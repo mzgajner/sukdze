@@ -78,7 +78,6 @@ watch(
       <UButton
         icon="i-ant-design:edit-twotone"
         label="Edit"
-        size="sm"
         class="place-self-end"
         @click="$emit('startEditing')"
       />
