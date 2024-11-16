@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bunx vite --open",
-    "build": "bunx vue-tsc && bunx vite build",
+    "build": "bunx vite build",
+    "check-types": "bunx vue-tsc",
     "preview": "bunx vite preview",
     "encrypt-hints": "bun src/encrypt-hints.ts",
     "format": "bunx prettier . --write"
