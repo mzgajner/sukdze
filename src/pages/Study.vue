@@ -37,7 +37,7 @@ async function previous() {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col h-screen select-none">
     <div class="card flex items-center justify-center px-8 flex-1">
       <div
         :key="currentPosition"

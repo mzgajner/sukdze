@@ -75,7 +75,7 @@ watch(
   </UCard>
   <UCard v-else>
     <div class="flex">
-      <div class="flex-1 place-self-center">
+      <div class="flex-1 place-self-center select-none">
         {{ card.original }} - {{ card.translation }}
       </div>
       <UButton
