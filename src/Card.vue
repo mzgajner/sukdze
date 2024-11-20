@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import { nextTick, useTemplateRef, watch } from 'vue'
+import { Card } from './types'
 
-const { editing } = defineProps<{
+const { editing, card } = defineProps<{
   editing: boolean
-  card: {
-    original: string
-    translation: string
-  }
+  card: Card
 }>()
 
 defineExpose({ setFocusToOriginal })
 
-const emit = defineEmits<{ startEditing: []; stopEditing: []; delete: [] }>()
+const emit = defineEmits<{
+  startEditing: []
+  stopEditing: []
+  delete: []
+  update: [Card]
+}>()
 
 const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
@@ -21,6 +24,10 @@ function setFocusToTranslation() {
 }
 function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
+}
+function save() {
+  emit('update', card)
+  emit('stopEditing')
 }
 
 watch(
@@ -49,7 +56,7 @@ watch(
         ref="translation"
         v-model="card.translation"
         placeholder="Translation"
-        @keydown.enter="emit('stopEditing')"
+        @keydown.enter="save"
       />
     </div>
     <template #footer>
@@ -62,11 +69,7 @@ watch(
           class="rounded-lg"
           @click="$emit('delete')"
         />
-        <UButton
-          icon="i-ant-design:save-twotone"
-          label="Save"
-          @click="$emit('stopEditing')"
-        />
+        <UButton icon="i-ant-design:save-twotone" label="Save" @click="save" />
       </div>
     </template>
   </UCard>

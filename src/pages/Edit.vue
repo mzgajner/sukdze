@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-import Card from '../Card.vue'
+import CardItem from '../Card.vue'
 import appData from '../storage'
+import type { Card } from '../types'
 
 const editingCard = ref<string | null>(null)
 
@@ -18,18 +19,33 @@ function addNewCard() {
 function deleteCard(cardId: string) {
   delete appData.value.cards[cardId]
 }
+
+function updateCard(cardId: string, card: Card) {
+  appData.value.cards[cardId] = card
+}
+
+const sortedCards = computed(() =>
+  Object.entries(appData.value.cards)
+    .map(([cardId, card]) => ({ ...card, id: cardId }))
+    .sort((a, b) => {
+      if (a.translation === '') return 1
+      else if (b.translation === '') return -1
+      else return a.translation.localeCompare(b.translation)
+    }),
+)
 </script>
 
 <template>
   <div class="px-3 py-1 flex-1 overflow-y-scroll">
     <div class="">
-      <Card
-        v-for="(card, cardId) in appData.cards"
+      <CardItem
+        v-for="card in sortedCards"
         :card="card"
-        :editing="editingCard === cardId"
-        @start-editing="editingCard = cardId"
+        :editing="editingCard === card.id"
+        @start-editing="editingCard = card.id"
         @stop-editing="editingCard = null"
-        @delete="deleteCard(cardId)"
+        @delete="deleteCard(card.id)"
+        @update="updateCard(card.id, $event)"
         class="w-full mb-2"
       />
       <UButton
