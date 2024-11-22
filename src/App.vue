@@ -10,6 +10,11 @@ const items = [
     icon: 'i-ant-design:thunderbolt-twotone',
     to: '/study',
   },
+  {
+    label: 'Settings',
+    icon: 'i-ant-design:setting-twotone',
+    to: '/settings',
+  },
 ]
 </script>
 

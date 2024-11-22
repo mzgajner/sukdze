@@ -4,6 +4,8 @@ import nuxtUI from '@nuxt/ui/vue-plugin'
 
 import Edit from './pages/Edit.vue'
 import Study from './pages/Study.vue'
+import Settings from './pages/Settings.vue'
+
 import App from './App.vue'
 const app = createApp(App)
 
@@ -13,6 +15,7 @@ app.use(
       { path: '/', redirect: '/edit' },
       { path: '/edit', component: Edit },
       { path: '/study', component: Study },
+      { path: '/settings', component: Settings },
     ],
     history: createWebHashHistory(),
   }),
