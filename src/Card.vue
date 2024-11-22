@@ -26,7 +26,10 @@ function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
 }
 function save() {
-  emit('update', card)
+  emit('update', {
+    original: card.original.trim(),
+    translation: card.translation.trim(),
+  })
   emit('stopEditing')
 }
 
