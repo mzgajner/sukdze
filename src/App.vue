@@ -17,7 +17,9 @@ const items = [
   <main class="flex flex-col items-stretch justify-center h-screen">
     <UNavigationMenu :items="items" class="justify-center" />
 
-    <RouterView />
+    <div class="p-4 flex-1 overflow-y-scroll">
+      <RouterView />
+    </div>
   </main>
 </template>
 

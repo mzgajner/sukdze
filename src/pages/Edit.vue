@@ -36,25 +36,23 @@ const sortedCards = computed(() =>
 </script>
 
 <template>
-  <div class="px-3 py-1 flex-1 overflow-y-scroll">
-    <div class="">
-      <CardItem
-        v-for="card in sortedCards"
-        :card="card"
-        :editing="editingCard === card.id"
-        @start-editing="editingCard = card.id"
-        @stop-editing="editingCard = null"
-        @delete="deleteCard(card.id)"
-        @update="updateCard(card.id, $event)"
-        class="w-full mb-2"
-      />
-      <UButton
-        block
-        size="xl"
-        variant="subtle"
-        @click="addNewCard"
-        label="Add new card"
-      />
-    </div>
+  <div>
+    <CardItem
+      v-for="card in sortedCards"
+      :card="card"
+      :editing="editingCard === card.id"
+      @start-editing="editingCard = card.id"
+      @stop-editing="editingCard = null"
+      @delete="deleteCard(card.id)"
+      @update="updateCard(card.id, $event)"
+      class="w-full mb-2"
+    />
+    <UButton
+      block
+      size="xl"
+      variant="subtle"
+      @click="addNewCard"
+      label="Add new card"
+    />
   </div>
 </template>

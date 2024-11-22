@@ -37,8 +37,8 @@ async function previous() {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen select-none">
-    <div class="card flex items-center justify-center px-8 flex-1">
+  <div class="flex flex-col select-none h-full">
+    <div class="card flex items-center justify-center px-4 flex-1">
       <div
         :key="currentPosition"
         class="card-content text-3xl rounded-lg shadow-xl w-full aspect-square transition-transform duration-300 relative bg-yellow-500/10"
@@ -59,7 +59,7 @@ async function previous() {
         </div>
       </div>
     </div>
-    <div class="flex justify-between p-2 gap-2">
+    <div class="flex justify-between gap-2">
       <UButton
         block
         label="Previous"
