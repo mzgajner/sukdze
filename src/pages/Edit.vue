@@ -72,7 +72,7 @@ function clearAndClose() {
     <UPopover :content="{ align: 'end' }" v-model:open="searchOpen">
       <UButton
         icon="i-ant-design:search-outlined"
-        class="rounded-full fixed top-4 right-8"
+        class="rounded-full fixed top-2 right-8"
         variant="subtle"
       />
 
