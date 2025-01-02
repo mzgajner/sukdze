@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import useSukdzeData from '#/composables/use-sukdze-data'
+import confetti from 'canvas-confetti'
 
 defineEmits<{ quit: [] }>()
 
@@ -36,6 +37,16 @@ async function previous() {
   cardFlipped.value = false
   currentPosition.value = Math.max(currentPosition.value - 1, 0)
 }
+
+function flipCard() {
+  cardFlipped.value = !cardFlipped.value
+
+  if (
+    cardFlipped.value &&
+    currentPosition.value === shuffledCards.value.length - 1
+  )
+    confetti()
+}
 </script>
 
 <template>
@@ -43,11 +54,11 @@ async function previous() {
     <div class="card flex items-center justify-center px-4 flex-1">
       <div
         :key="currentPosition"
-        class="card-content text-3xl rounded-lg shadow-xl w-full aspect-square transition-transform duration-300 relative bg-yellow-500/10"
+        class="card-content text-3xl rounded-lg shadow-xl w-full max-w-[50vh] aspect-square transition-transform duration-300 relative bg-yellow-500/10"
         :class="{
           flip: cardFlipped,
         }"
-        @click="cardFlipped = !cardFlipped"
+        @click="flipCard"
       >
         <div
           class="card-front absolute w-full h-full flex p-8 justify-center items-center"
