@@ -12,7 +12,7 @@ const sukdzeData = useSukdzeData()
 
 function addNewCard() {
   const newCardId = crypto.randomUUID()
-  const newCard = { original: '', translation: '' }
+  const newCard = { original: '', translation: '', tags: [] }
 
   sukdzeData.value.cards[newCardId] = newCard
   editingCard.value = newCard

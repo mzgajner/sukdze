@@ -9,8 +9,10 @@ const appData: Ref<AppData> = useStorage(
       'db7773c1-bf41-4f7d-b285-dbf35688c5ec': {
         original: '숙제',
         translation: 'Domača naloga',
+        tags: [],
       },
     },
+    tags: [],
   },
   undefined,
   { deep: true },
