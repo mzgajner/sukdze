@@ -52,6 +52,27 @@ function clearAndClose() {
 </script>
 
 <template>
+  <Teleport to="#top-nav">
+    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)]">
+      <UInput
+        v-model="searchTerm"
+        size="xl"
+        class="w-full"
+        placeholder="Type to filter cards"
+        icon="i-ant-design:search-outlined"
+      >
+        <template v-if="searchTerm?.length" #trailing>
+          <UButton
+            color="neutral"
+            variant="link"
+            icon="i-ant-design:close-circle-outlined"
+            aria-label="Clear input"
+            @click="clearAndClose"
+          />
+        </template>
+      </UInput>
+    </div>
+  </Teleport>
   <div>
     <CardItem
       v-for="card in sortedAndFilteredCards"
@@ -70,26 +91,5 @@ function clearAndClose() {
       @click="addNewCard"
       label="Add new card"
     />
-    <UPopover :content="{ align: 'end' }" v-model:open="searchOpen">
-      <UButton
-        icon="i-ant-design:search-outlined"
-        class="rounded-full fixed top-2 right-8"
-        variant="subtle"
-      />
-
-      <template #content>
-        <UInput v-model="searchTerm" size="xl" class="m-2">
-          <template v-if="searchTerm?.length" #trailing>
-            <UButton
-              color="neutral"
-              variant="link"
-              icon="i-ant-design:close-circle-outlined"
-              aria-label="Clear input"
-              @click="clearAndClose"
-            />
-          </template>
-        </UInput>
-      </template>
-    </UPopover>
   </div>
 </template>
