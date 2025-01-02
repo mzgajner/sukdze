@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 const items = [
   {
     label: 'Edit',
@@ -21,11 +24,21 @@ const items = [
 <template>
   <UApp>
     <main class="flex flex-col items-stretch justify-center h-screen">
-      <UNavigationMenu :items="items" class="justify-center" />
-
       <div class="p-4 flex-1 overflow-y-scroll">
         <RouterView />
       </div>
+      <UNavigationMenu
+        v-if="!route.meta.hideNav"
+        :items="items"
+        variant="link"
+        :ui="{
+          link: 'text-base justify-center',
+          linkLeadingIcon: 'size-6',
+          list: 'justify-between',
+          root: 'w-full [&>div]:min-w-full px-2 bg-[var(--ui-bg-elevated)]',
+          item: 'w-1/3',
+        }"
+      />
     </main>
   </UApp>
 </template>

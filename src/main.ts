@@ -14,7 +14,7 @@ app.use(
     routes: [
       { path: '/', redirect: '/edit' },
       { path: '/edit', component: Edit },
-      { path: '/study', component: Study },
+      { path: '/study', component: Study, meta: { hideNav: true } },
       { path: '/settings', component: Settings },
     ],
     history: createWebHashHistory(),
