@@ -43,6 +43,8 @@ function importFromFile() {
 }
 
 function saveTag() {
+  if (!sukdzeData.value.tags) sukdzeData.value.tags = []
+
   if (sukdzeData.value.tags.includes(newTagName.value)) {
     alert('Tag already exists')
   } else {
