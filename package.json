@@ -1,7 +1,7 @@
 {
   "name": "sukdze",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "bunx vite --open",
