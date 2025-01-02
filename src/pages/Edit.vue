@@ -4,10 +4,11 @@ import { computed, ref } from 'vue'
 import CardItem from '../Card.vue'
 import useSukdzeData from '../use-sukdze-data'
 import type { Card } from '../types'
+import TagSelector from '../TagSelector.vue'
 
-const editingCard = ref<string | null>(null)
-const searchTerm = ref('')
-const searchOpen = ref(false)
+const editingCard = ref<Card | null>(null)
+const filterTerm = ref('')
+const filterTags = ref<string[]>([])
 const sukdzeData = useSukdzeData()
 
 function addNewCard() {
@@ -32,23 +33,41 @@ const sortedAndFilteredCards = computed(() =>
       else return a.translation.localeCompare(b.translation)
     })
     .filter((card: Card) => {
-      if (!searchTerm.value) return true
+      let termMatches = true
+      let tagsMatch = true
 
+      if (filterTerm.value) {
+        const term = filterTerm.value.toLocaleLowerCase()
+        const word =
+          `${card.original} - ${card.translation}`.toLocaleLowerCase()
+        termMatches = word.includes(term)
+      }
+
+      if (filterTags.value.length > 0) {
+        const tagsFromFilter = new Set(filterTags.value)
+        const tagsFromCard = new Set(card.tags ?? [])
+
+        tagsMatch = tagsFromFilter.intersection(tagsFromCard).size > 0
+      }
+
+      return termMatches && tagsMatch
+    }),
+)
 
 const clearFilterTerm = () => (filterTerm.value = '')
 </script>
 
 <template>
   <Teleport to="#top-nav">
-    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)]">
+    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)] flex">
       <UInput
-        v-model="searchTerm"
+        v-model="filterTerm"
         size="xl"
-        class="w-full"
+        class="w-2/3 pr-2 flex-shrink-0"
         placeholder="Type to filter cards"
         icon="i-ant-design:search-outlined"
       >
-        <template v-if="searchTerm?.length" #trailing>
+        <template v-if="filterTerm?.length" #trailing>
           <UButton
             color="neutral"
             variant="link"
@@ -58,6 +77,7 @@ const clearFilterTerm = () => (filterTerm.value = '')
           />
         </template>
       </UInput>
+      <TagSelector class="w-1/3" v-model="filterTags" />
     </div>
   </Teleport>
   <div>

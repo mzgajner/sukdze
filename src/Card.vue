@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, useTemplateRef, watch } from 'vue'
 import { Card } from './types'
+import TagSelector from './TagSelector.vue'
 
 const { editing, card } = defineProps<{
   editing: boolean
@@ -48,6 +49,7 @@ watch(
         placeholder="Translation"
         @keydown.enter="$emit('stopEditing')"
       />
+      <TagSelector v-model="card.tags" />
     </div>
     <template #footer>
       <div class="flex gap-2 justify-end">
