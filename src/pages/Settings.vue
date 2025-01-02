@@ -5,6 +5,7 @@ import useSukdzeData from '../use-sukdze-data'
 const file = ref('')
 const fileInput = useTemplateRef('fileInput')
 const sukdzeData = useSukdzeData()
+const newTagName = ref('')
 
 function download() {
   const file = new Blob([JSON.stringify(sukdzeData.value)], {
@@ -39,6 +40,28 @@ function importFromFile() {
     sukdzeData.value = data
   }
   reader.readAsText(file)
+}
+
+function saveTag() {
+  if (sukdzeData.value.tags.includes(newTagName.value)) {
+    alert('Tag already exists')
+  } else {
+    sukdzeData.value.tags.push(newTagName.value)
+    newTagName.value = ''
+  }
+}
+
+function deleteTag(tag: string) {
+  const deleteIndex = sukdzeData.value.tags.indexOf(tag)
+  sukdzeData.value.tags.splice(deleteIndex, 1)
+
+  Object.values(sukdzeData.value.cards).forEach((card) => {
+    if (!card.tags) return
+
+    const cardDeleteIndex = card.tags?.indexOf(tag)
+    if (cardDeleteIndex !== undefined && cardDeleteIndex > -1)
+      card.tags.splice(cardDeleteIndex, 1)
+  })
 }
 </script>
 
@@ -78,6 +101,35 @@ function importFromFile() {
         :variant="!file ? 'outline' : 'solid'"
         @click="importFromFile"
       />
+
+      <USeparator class="mt-8 mb-6" />
+
+      <div class="font-semibold text-lg mb-2">Tags</div>
+
+      <ul class="w-full">
+        <li
+          v-for="tag in sukdzeData.tags"
+          class="flex items-center gap-1 h-8 w-full my-2"
+        >
+          <UIcon name="i-ant-design:tag-outlined" />
+          <div class="flex-1">{{ tag }}</div>
+          <UButton
+            icon="i-ant-design:delete-twotone"
+            color="error"
+            variant="outline"
+            @click="deleteTag(tag)"
+          />
+        </li>
+      </ul>
+      <div class="flex w-full mt-3">
+        <UInput
+          placeholder="Add a new tag"
+          class="flex-1 mr-2"
+          v-model="newTagName"
+          @keydown.enter="saveTag"
+        />
+        <UButton @click="saveTag" label="Save" />
+      </div>
     </div>
   </div>
 </template>

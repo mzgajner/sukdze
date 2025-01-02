@@ -59,12 +59,12 @@ const clearFilterTerm = () => (filterTerm.value = '')
 
 <template>
   <Teleport to="#top-nav">
-    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)] flex">
+    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)] flex gap-2">
       <UInput
         v-model="filterTerm"
-        size="xl"
-        class="w-2/3 pr-2 flex-shrink-0"
-        placeholder="Type to filter cards"
+        size="lg"
+        class="w-1/2 flex-shrink-0"
+        placeholder="Type to filter"
         icon="i-ant-design:search-outlined"
       >
         <template v-if="filterTerm?.length" #trailing>
@@ -77,7 +77,9 @@ const clearFilterTerm = () => (filterTerm.value = '')
           />
         </template>
       </UInput>
-      <TagSelector class="w-1/3" v-model="filterTags" />
+      <div class="w-1/2">
+        <TagSelector v-model="filterTags" />
+      </div>
     </div>
   </Teleport>
   <div>

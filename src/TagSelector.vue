@@ -10,6 +10,9 @@ const sukdzeData = useSukdzeData()
     v-model="model"
     multiple
     placeholder="Tags"
+    icon="i-ant-design:tags-outlined"
+    size="lg"
+    class="w-full"
     :search-input="false"
     :items="sukdzeData.tags"
   />
