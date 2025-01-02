@@ -55,7 +55,7 @@ async function previous() {
           {{ currentCard.original }}
         </div>
         <div
-          class="card-back absolute w-full h-full flex p-8 justify-center items-center"
+          class="card-back absolute w-full h-full flex p-8 justify-center items-center text-6xl"
         >
           {{ currentCard.translation }}
         </div>
