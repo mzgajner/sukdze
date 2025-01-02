@@ -19,13 +19,15 @@ const items = [
 </script>
 
 <template>
-  <main class="flex flex-col items-stretch justify-center h-screen">
-    <UNavigationMenu :items="items" class="justify-center" />
+  <UApp>
+    <main class="flex flex-col items-stretch justify-center h-screen">
+      <UNavigationMenu :items="items" class="justify-center" />
 
-    <div class="p-4 flex-1 overflow-y-scroll">
-      <RouterView />
-    </div>
-  </main>
+      <div class="p-4 flex-1 overflow-y-scroll">
+        <RouterView />
+      </div>
+    </main>
+  </UApp>
 </template>
 
 <style>
