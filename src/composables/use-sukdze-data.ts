@@ -1,6 +1,6 @@
-import { useStorage } from '@vueuse/core'
-import { type AppData } from './types'
 import { type Ref } from 'vue'
+import { useStorage } from '@vueuse/core'
+import { type AppData } from '#/types'
 
 const appData: Ref<AppData> = useStorage(
   'sukdzeData',

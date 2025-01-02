@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import useSukdzeData from './use-sukdze-data'
+import useSukdzeData from '../composables/use-sukdze-data'
 
 const model = defineModel<string[]>()
 const sukdzeData = useSukdzeData()

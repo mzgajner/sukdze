@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import useSukdzeData from '../use-sukdze-data'
+import useSukdzeData from '#/composables/use-sukdze-data'
 
 const file = ref('')
 const fileInput = useTemplateRef('fileInput')

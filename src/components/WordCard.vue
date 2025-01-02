@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, useTemplateRef, watch } from 'vue'
-import { Card } from './types'
-import TagSelector from './TagSelector.vue'
+import { Card } from '#/types.ts'
+import TagSelector from '#/components/TagSelector.vue'
 
 const { editing, card } = defineProps<{
   editing: boolean

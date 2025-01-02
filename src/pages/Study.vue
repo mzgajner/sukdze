@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import useSukdzeData from '../use-sukdze-data'
+import useSukdzeData from '#/composables/use-sukdze-data'
 
 defineEmits<{ quit: [] }>()
 

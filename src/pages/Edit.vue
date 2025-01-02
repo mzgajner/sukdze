@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import CardItem from '../Card.vue'
-import useSukdzeData from '../use-sukdze-data'
-import type { Card } from '../types'
-import TagSelector from '../TagSelector.vue'
+import WordCard from '#/components/WordCard.vue'
+import useSukdzeData from '#/composables/use-sukdze-data'
+import { Card } from '#/types'
+import TagSelector from '#/components/TagSelector.vue'
 
 const editingCard = ref<Card | null>(null)
 const filterTerm = ref('')
@@ -83,7 +83,7 @@ const clearFilterTerm = () => (filterTerm.value = '')
     </div>
   </Teleport>
   <div>
-    <CardItem
+    <WordCard
       v-for="card in sortedAndFilteredCards"
       :card="card"
       :editing="editingCard === card"

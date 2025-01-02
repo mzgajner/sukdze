@@ -2,11 +2,11 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import nuxtUI from '@nuxt/ui/vue-plugin'
 
-import Edit from './pages/Edit.vue'
-import Study from './pages/Study.vue'
-import Settings from './pages/Settings.vue'
+import Edit from '#/pages/Edit.vue'
+import Study from '#/pages/Study.vue'
+import Settings from '#/pages/Settings.vue'
 
-import App from './App.vue'
+import App from '#/App.vue'
 const app = createApp(App)
 
 app.use(
