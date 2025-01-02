@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
 const items = [
   {
     label: 'Edit',
@@ -23,7 +20,6 @@ const items = [
 
 <template>
   <UNavigationMenu
-    v-if="!route.meta.hideNav"
     :items="items"
     variant="link"
     :ui="{
