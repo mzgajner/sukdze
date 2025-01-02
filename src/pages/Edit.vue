@@ -12,24 +12,20 @@ const sukdzeData = useSukdzeData()
 
 function addNewCard() {
   const newCardId = crypto.randomUUID()
-  sukdzeData.value.cards[newCardId] = {
-    original: '',
-    translation: '',
-  }
-  editingCard.value = newCardId
+  const newCard = { original: '', translation: '' }
+
+  sukdzeData.value.cards[newCardId] = newCard
+  editingCard.value = newCard
 }
 
-function deleteCard(cardId: string) {
-  delete sukdzeData.value.cards[cardId]
-}
-
-function updateCard(cardId: string, card: Card) {
-  sukdzeData.value.cards[cardId] = card
+function deleteCard(card: Card) {
+  const cards = sukdzeData.value.cards
+  const idToDelete = Object.keys(cards).find((id) => cards[id] === card)!
+  delete cards[idToDelete]
 }
 
 const sortedAndFilteredCards = computed(() =>
-  Object.entries(sukdzeData.value.cards)
-    .map(([cardId, card]) => ({ ...card, id: cardId }))
+  Object.values(sukdzeData.value.cards)
     .sort((a, b) => {
       if (a.translation === '') return 1
       else if (b.translation === '') return -1
@@ -38,17 +34,8 @@ const sortedAndFilteredCards = computed(() =>
     .filter((card: Card) => {
       if (!searchTerm.value) return true
 
-      const term = searchTerm.value.toLocaleLowerCase()
-      const word = `${card.original} - ${card.translation}`.toLocaleLowerCase()
 
-      return word.includes(term)
-    }),
-)
-
-function clearAndClose() {
-  searchTerm.value = ''
-  searchOpen.value = false
-}
+const clearFilterTerm = () => (filterTerm.value = '')
 </script>
 
 <template>
@@ -67,7 +54,7 @@ function clearAndClose() {
             variant="link"
             icon="i-ant-design:close-circle-outlined"
             aria-label="Clear input"
-            @click="clearAndClose"
+            @click="clearFilterTerm()"
           />
         </template>
       </UInput>
@@ -77,11 +64,10 @@ function clearAndClose() {
     <CardItem
       v-for="card in sortedAndFilteredCards"
       :card="card"
-      :editing="editingCard === card.id"
-      @start-editing="editingCard = card.id"
+      :editing="editingCard === card"
+      @start-editing="editingCard = card"
       @stop-editing="editingCard = null"
-      @delete="deleteCard(card.id)"
-      @update="updateCard(card.id, $event)"
+      @delete="deleteCard(card)"
       class="w-full mb-2"
     />
     <UButton

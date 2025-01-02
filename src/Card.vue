@@ -8,13 +8,7 @@ const { editing, card } = defineProps<{
 }>()
 
 defineExpose({ setFocusToOriginal })
-
-const emit = defineEmits<{
-  startEditing: []
-  stopEditing: []
-  delete: []
-  update: [Card]
-}>()
+defineEmits<{ startEditing: []; stopEditing: []; delete: []; update: [Card] }>()
 
 const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
@@ -24,13 +18,6 @@ function setFocusToTranslation() {
 }
 function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
-}
-function save() {
-  emit('update', {
-    original: card.original.trim(),
-    translation: card.translation.trim(),
-  })
-  emit('stopEditing')
 }
 
 watch(
@@ -59,7 +46,7 @@ watch(
         ref="translation"
         v-model="card.translation"
         placeholder="Translation"
-        @keydown.enter="save"
+        @keydown.enter="$emit('stopEditing')"
       />
     </div>
     <template #footer>
@@ -72,7 +59,11 @@ watch(
           class="rounded-lg"
           @click="$emit('delete')"
         />
-        <UButton icon="i-ant-design:save-twotone" label="Save" @click="save" />
+        <UButton
+          icon="i-ant-design:save-twotone"
+          label="Save"
+          @click="$emit('stopEditing')"
+        />
       </div>
     </template>
   </UCard>
