@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import appData from '../storage'
+import useSukdzeData from '../use-sukdze-data'
 
 defineEmits<{ quit: [] }>()
+
+const sukdzeData = useSukdzeData()
 
 function shuffleArray(array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -14,7 +16,7 @@ function shuffleArray(array: Array<any>) {
 }
 
 const shuffledCards = computed(() => {
-  const cardArray = Object.values(appData.value.cards) || []
+  const cardArray = Object.values(sukdzeData.value.cards) || []
   shuffleArray(cardArray)
   return cardArray
 })

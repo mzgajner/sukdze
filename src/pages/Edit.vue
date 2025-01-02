@@ -2,16 +2,17 @@
 import { computed, ref } from 'vue'
 
 import CardItem from '../Card.vue'
-import appData from '../storage'
+import useSukdzeData from '../use-sukdze-data'
 import type { Card } from '../types'
 
 const editingCard = ref<string | null>(null)
 const searchTerm = ref('')
 const searchOpen = ref(false)
+const sukdzeData = useSukdzeData()
 
 function addNewCard() {
   const newCardId = crypto.randomUUID()
-  appData.value.cards[newCardId] = {
+  sukdzeData.value.cards[newCardId] = {
     original: '',
     translation: '',
   }
@@ -19,15 +20,15 @@ function addNewCard() {
 }
 
 function deleteCard(cardId: string) {
-  delete appData.value.cards[cardId]
+  delete sukdzeData.value.cards[cardId]
 }
 
 function updateCard(cardId: string, card: Card) {
-  appData.value.cards[cardId] = card
+  sukdzeData.value.cards[cardId] = card
 }
 
 const sortedAndFilteredCards = computed(() =>
-  Object.entries(appData.value.cards)
+  Object.entries(sukdzeData.value.cards)
     .map(([cardId, card]) => ({ ...card, id: cardId }))
     .sort((a, b) => {
       if (a.translation === '') return 1

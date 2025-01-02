@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import appData from '../storage'
+import useSukdzeData from '../use-sukdze-data'
 
 const file = ref('')
 const fileInput = useTemplateRef('fileInput')
+const sukdzeData = useSukdzeData()
 
 function download() {
-  const file = new Blob([JSON.stringify(appData.value)], {
+  const file = new Blob([JSON.stringify(sukdzeData.value)], {
     type: 'application/json',
   })
   const a = document.createElement('a'),
@@ -35,7 +36,7 @@ function importFromFile() {
   const reader = new FileReader()
   reader.onload = function () {
     const data = JSON.parse(reader.result as string)
-    appData.value = data
+    sukdzeData.value = data
   }
   reader.readAsText(file)
 }

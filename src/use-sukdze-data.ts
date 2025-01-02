@@ -16,4 +16,6 @@ const appData: Ref<AppData> = useStorage(
   { deep: true },
 )
 
-export default appData
+export default function () {
+  return appData
+}
