@@ -29,7 +29,7 @@ function importFromFile() {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col items-start">
     <UInput
       ref="fileInput"
       class="mb-2"
