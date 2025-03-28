@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import Navigation from '#/components/Navigation.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
@@ -9,7 +12,7 @@ import Navigation from '#/components/Navigation.vue'
       <div class="p-4 flex-1 overflow-y-scroll">
         <RouterView />
       </div>
-      <Navigation />
+      <Navigation v-if="!route.meta.hideNavigation" />
     </main>
   </UApp>
 </template>
