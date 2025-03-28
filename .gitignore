@@ -12,6 +12,7 @@ dist
 dist-ssr
 .vite
 *.local
+.env
 
 # Editor directories and files
 .vscode/*
@@ -33,4 +34,6 @@ components.d.ts
 
 # Pocketbase stuff
 pb_data
+pb_public
 pocketbase
+pocketbaze
