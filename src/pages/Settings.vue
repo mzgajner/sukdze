@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import SettingsBackup from '#/components/SettingsBackup.vue'
-import SettingsTags from '#/components/SettingsTags.vue'
 import SettingsRestore from '#/components/SettingsRestore.vue'
+import SettingsTags from '#/components/SettingsTags.vue'
+import SettingsLogout from '#/components/SettingsLogout.vue'
 </script>
 
 <template>
@@ -22,6 +23,10 @@ import SettingsRestore from '#/components/SettingsRestore.vue'
 
     <SettingsWrapper title="Tags">
       <SettingsTags />
+    </SettingsWrapper>
+
+    <SettingsWrapper title="Logout">
+      <SettingsLogout />
     </SettingsWrapper>
   </div>
 </template>
