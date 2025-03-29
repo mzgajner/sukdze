@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Tag } from '#/api-client'
+import { Tag } from '#/types'
 
 const model = defineModel<string[]>()
 defineProps<{ tags: Tag[] }>()

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useSukdzeData from '#/composables/use-sukdze-data'
-import { createTag, deleteTag, getUserId, Tag } from '#/api-client'
+import { createTag, deleteTag, getUserId } from '#/api-client'
+import { Tag } from '#/types'
 
 const { tags, cards } = useSukdzeData()
 const newTagInputValue = ref('')

@@ -1,15 +1,8 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
 import useSukdzeData from '#/composables/use-sukdze-data'
-import {
-  createCard,
-  createTag,
-  getUserId,
-  Tag,
-  Card,
-  fetchTags,
-} from '#/api-client'
-import {} from '#/types'
+import { createCard, createTag, getUserId, fetchTags } from '#/api-client'
+import { Tag } from '#/types'
 
 const { refresh } = useSukdzeData()
 

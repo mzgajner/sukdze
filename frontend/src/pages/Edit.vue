@@ -3,9 +3,9 @@ import { computed, ref } from 'vue'
 
 import WordCard from '#/components/WordCard.vue'
 import TagSelector from '#/components/TagSelector.vue'
-import { Card, deleteCard, getUserId, updateCard } from '#/api-client'
-import { createCard } from '../api-client'
+import { deleteCard, getUserId, updateCard, createCard } from '#/api-client'
 import useSukdzeData from '#/composables/use-sukdze-data'
+import { Card } from '#/types'
 
 const editingCard = ref<Card | null>(null)
 const filterTerm = ref('')

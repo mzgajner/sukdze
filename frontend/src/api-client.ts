@@ -1,37 +1,12 @@
-import PocketBase, { type RecordService } from 'pocketbase'
+import PocketBase from 'pocketbase'
+import { Card, Tag, TypedPocketBase } from './types'
 
-export interface Card {
-  author: string
-  collectionId: string
-  collectionName: string
-  created: string
-  id: string
-  originalText: string
-  tags: string[]
-  translatedText: string
-  updated: string
-}
-
-export interface Tag {
-  author: string
-  collectionId: string
-  collectionName: string
-  created: string
-  id: string
-  label: string
-  updated: string
-}
-
-interface TypedPocketBase extends PocketBase {
-  collection(idOrName: string): RecordService // default fallback for any other collection
-  collection(idOrName: 'cards'): RecordService<Card>
-  collection(idOrName: 'tags'): RecordService<Tag>
-}
-
+// Client initialization
 const pb = new PocketBase(
   import.meta.env.VITE_POCKETBASE_URL,
 ) as TypedPocketBase
 
+// Auth
 export async function login(email: string, password: string) {
   await pb.collection('users').authWithPassword(email, password)
 }

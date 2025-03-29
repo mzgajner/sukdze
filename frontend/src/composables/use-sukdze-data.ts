@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import { Card, fetchCards, fetchTags, Tag } from '#/api-client'
+import { fetchCards, fetchTags } from '#/api-client'
+import { Card, Tag } from '#/types'
 
 const cards = ref<Card[]>([])
 const tags = ref<Tag[]>([])
