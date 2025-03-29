@@ -70,16 +70,20 @@ watch(
       </div>
     </template>
   </UCard>
-  <UCard v-else>
-    <div class="flex">
-      <div class="flex-1 place-self-center select-none">
-        {{ card.originalText }} - {{ card.translatedText }}
-      </div>
-      <UButton
-        icon="i-ant-design:edit-twotone"
-        class="place-self-end"
-        @click="$emit('startEditing')"
+  <div v-else class="flex border-b border-(--ui-border)">
+    <div class="flex-1 place-self-center select-none">
+      {{ card.originalText }}
+      <UIcon
+        name="i-ant-design:arrow-right-outlined"
+        class="text-(--ui-text-dimmed) text-sm inline-block mb-1 mx-0.5"
       />
+      {{ card.translatedText }}
     </div>
-  </UCard>
+    <UButton
+      variant="link"
+      icon="i-ant-design:edit-twotone"
+      class="place-self-end"
+      @click="$emit('startEditing')"
+    />
+  </div>
 </template>
