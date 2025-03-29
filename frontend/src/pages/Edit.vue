@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
+import { refDebounced } from '@vueuse/core'
 
 import WordCard from '#/components/WordCard.vue'
 import TagSelector from '#/components/TagSelector.vue'
@@ -7,8 +8,9 @@ import { getUserId, createCard } from '#/api-client'
 import useSukdzeData from '#/composables/use-sukdze-data'
 import { Card } from '#/types'
 
-const editingCard = ref<Card | null>(null)
-const filterTerm = ref('')
+const editingCard = shallowRef<Card | null>(null)
+const filterTerm = shallowRef('')
+const debouncedFilterTerm = refDebounced(filterTerm, 500)
 const filterTags = ref<string[]>([])
 
 const { cards, tags, isFetched } = useSukdzeData()
@@ -35,8 +37,8 @@ const sortedAndFilteredCards = computed(() =>
       let termMatches = true
       let tagsMatch = true
 
-      if (filterTerm.value) {
-        const term = filterTerm.value.toLocaleLowerCase()
+      if (debouncedFilterTerm.value) {
+        const term = debouncedFilterTerm.value.toLocaleLowerCase()
         const word =
           `${card.originalText} - ${card.translatedText}`.toLocaleLowerCase()
         termMatches = word.includes(term)
@@ -52,8 +54,6 @@ const sortedAndFilteredCards = computed(() =>
       return termMatches && tagsMatch
     }),
 )
-
-const clearFilterTerm = () => (filterTerm.value = '')
 </script>
 
 <template>
@@ -64,18 +64,10 @@ const clearFilterTerm = () => (filterTerm.value = '')
         size="lg"
         class="w-1/2 flex-shrink-0"
         placeholder="Type to filter"
+        type="search"
         icon="i-ant-design:search-outlined"
-      >
-        <template v-if="filterTerm?.length" #trailing>
-          <UButton
-            color="neutral"
-            variant="link"
-            icon="i-ant-design:close-circle-outlined"
-            aria-label="Clear input"
-            @click="clearFilterTerm()"
-          />
-        </template>
-      </UInput>
+      />
+
       <div class="w-1/2">
         <TagSelector v-model="filterTags" :tags="tags" />
       </div>
