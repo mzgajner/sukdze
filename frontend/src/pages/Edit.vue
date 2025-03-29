@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import WordCard from '#/components/WordCard.vue'
 import TagSelector from '#/components/TagSelector.vue'
-import { deleteCard, getUserId, updateCard, createCard } from '#/api-client'
+import { getUserId, createCard } from '#/api-client'
 import useSukdzeData from '#/composables/use-sukdze-data'
 import { Card } from '#/types'
 
@@ -22,18 +22,6 @@ async function handleAddNewCard() {
   })
   cards.value.push(newCard)
   editingCard.value = newCard
-}
-
-async function handleDeleteCard(card: Card) {
-  editingCard.value = null
-  const deleteIndex = cards.value.indexOf(card)
-  cards.value.splice(deleteIndex, 1)
-  await deleteCard(card.id)
-}
-
-async function handleSaveCard(card: Card) {
-  editingCard.value = null
-  await updateCard(card)
 }
 
 const sortedAndFilteredCards = computed(() =>
@@ -108,19 +96,17 @@ const clearFilterTerm = () => (filterTerm.value = '')
       v-for="card in sortedAndFilteredCards"
       :card="card"
       :editing="editingCard === card"
-      :tags="tags"
-      @start-editing="editingCard = card"
-      @stop-editing="handleSaveCard(card)"
-      @delete="handleDeleteCard(card)"
+      @open="editingCard = card"
+      @close="editingCard = null"
       class="w-full mb-2"
     />
     <UButton
       block
       size="xl"
       variant="subtle"
-      @click="handleAddNewCard"
       label="Add new card"
       loading-auto
+      @click="handleAddNewCard"
     />
   </div>
 </template>

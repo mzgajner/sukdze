@@ -1,20 +1,23 @@
 <script lang="ts" setup>
 import { nextTick, useTemplateRef, watch } from 'vue'
 import TagSelector from '#/components/TagSelector.vue'
-import { Card, Tag } from '#/types'
+import { Card } from '#/types'
+import { deleteCard, updateCard } from '#/api-client'
+import useSukdzeData from '#/composables/use-sukdze-data'
 
 let cardBackup: Card | null = null
+
+const { cards, tags } = useSukdzeData()
 
 const { editing, card } = defineProps<{
   editing: boolean
   card: Card
-  tags: Tag[]
 }>()
 
 defineExpose({ setFocusToOriginal })
 const emit = defineEmits<{
-  startEditing: []
-  stopEditing: []
+  open: []
+  close: []
   delete: []
   update: [Card]
 }>()
@@ -28,12 +31,6 @@ function setFocusToTranslation() {
 function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
 }
-function cancelEditing() {
-  card.originalText = cardBackup?.originalText ?? ''
-  card.translatedText = cardBackup?.translatedText ?? ''
-  card.tags = cardBackup?.tags ?? []
-  emit('stopEditing')
-}
 watch(
   () => editing,
   async (newEditingValue) => {
@@ -45,6 +42,25 @@ watch(
   },
   { immediate: true },
 )
+
+async function handleSaveCard() {
+  await updateCard(card)
+  emit('close')
+}
+
+async function handleDeleteCard() {
+  await deleteCard(card.id)
+  const deleteIndex = cards.value.indexOf(card)
+  cards.value.splice(deleteIndex, 1)
+  emit('close')
+}
+
+function handleCancelEditing() {
+  card.originalText = cardBackup?.originalText ?? ''
+  card.translatedText = cardBackup?.translatedText ?? ''
+  card.tags = cardBackup?.tags ?? []
+  emit('close')
+}
 </script>
 
 <template>
@@ -62,7 +78,7 @@ watch(
         ref="translation"
         v-model="card.translatedText"
         placeholder="Translation"
-        @keydown.enter="$emit('stopEditing')"
+        @keydown.enter="handleSaveCard"
       />
       <TagSelector v-model="card.tags" :tags="tags" />
     </div>
@@ -73,19 +89,21 @@ watch(
           label="Delete"
           variant="subtle"
           color="error"
-          @click="$emit('delete')"
+          loading-auto
+          @click="handleDeleteCard"
         />
         <div class="flex-1"></div>
         <UButton
           label="Cancel"
           variant="ghost"
           color="neutral"
-          @click="cancelEditing"
+          @click="handleCancelEditing"
         />
         <UButton
           icon="i-ant-design:save-twotone"
           label="Save"
-          @click="$emit('stopEditing')"
+          loading-auto
+          @click="handleSaveCard"
         />
       </div>
     </template>
@@ -103,7 +121,7 @@ watch(
       variant="link"
       icon="i-ant-design:edit-twotone"
       class="place-self-end"
-      @click="$emit('startEditing')"
+      @click="$emit('open')"
     />
   </div>
 </template>
