@@ -9,7 +9,7 @@ RUN bun run build
 
 FROM alpine:latest
 
-COPY --from=frontend-build /usr/src/sukdze-client/dist/* /pb/pb_public
+COPY --from=frontend-build /usr/src/sukdze-client/dist /pb/pb_public
 
 ARG PB_VERSION=0.26.5
 
