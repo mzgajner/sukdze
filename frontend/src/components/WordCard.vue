@@ -14,7 +14,6 @@ const { editing, card } = defineProps<{
   card: Card
 }>()
 
-defineExpose({ setFocusToOriginal })
 const emit = defineEmits<{
   open: []
   close: []
@@ -25,11 +24,21 @@ const emit = defineEmits<{
 const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
 
+function scrollParentToTop() {
+  const cardElement = originalInputElement.value?.inputRef!.closest(
+    '[data-card-container]',
+  )
+  const scrollParent = cardElement.closest('[data-scroll-container]')!
+  const requiredDistance = cardElement.offsetTop - 60
+  scrollParent.scroll({ top: requiredDistance })
+}
+
 function setFocusToTranslation() {
   translationInputElement.value?.inputRef?.focus()
 }
 function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
+  scrollParentToTop()
 }
 watch(
   () => editing,
@@ -64,7 +73,7 @@ function handleCancelEditing() {
 </script>
 
 <template>
-  <UCard v-if="editing">
+  <UCard v-if="editing" data-card-container>
     <div class="flex-1 flex gap-2 flex-col">
       <UInput
         lang="sl-SI"

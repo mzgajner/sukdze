@@ -9,7 +9,7 @@ const route = useRoute()
   <UApp>
     <main class="flex flex-col items-stretch justify-center h-screen">
       <div id="top-nav" />
-      <div class="p-4 flex-1 overflow-y-scroll">
+      <div class="p-4 flex-1 overflow-y-scroll" data-scroll-container>
         <RouterView />
       </div>
       <Navigation v-if="!route.meta.hideNavigation" />
