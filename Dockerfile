@@ -1,4 +1,15 @@
+FROM oven/bun:1-alpine AS frontend-build
+
+RUN mkdir -p /usr/src/sukdze-client
+WORKDIR /usr/src/sukdze-client
+
+COPY ./frontend /usr/src/sukdze-client
+RUN bun install --frozen-lockfile
+RUN bun run build
+
 FROM alpine:latest
+
+COPY --from=frontend-build /usr/src/sukdze-client/dist/* /pb/pb_public
 
 ARG PB_VERSION=0.26.5
 
