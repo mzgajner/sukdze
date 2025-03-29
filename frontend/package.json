@@ -1,7 +1,7 @@
 {
   "name": "sukdze",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "bunx vite --open",
@@ -11,7 +11,7 @@
     "format": "bunx prettier . --write"
   },
   "dependencies": {
-    "@nuxt/ui": "3.0.1",
+    "@nuxt/ui": "3.0.2",
     "@vueuse/core": "^13.0.0",
     "canvas-confetti": "^1.9.3",
     "pocketbase": "^0.25.2",
