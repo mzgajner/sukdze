@@ -11,7 +11,7 @@ const editingCard = ref<Card | null>(null)
 const filterTerm = ref('')
 const filterTags = ref<string[]>([])
 
-const { cards, tags } = useSukdzeData()
+const { cards, tags, isFetched } = useSukdzeData()
 
 async function handleAddNewCard() {
   const newCard = await createCard({
@@ -93,7 +93,17 @@ const clearFilterTerm = () => (filterTerm.value = '')
       </div>
     </div>
   </Teleport>
-  <div>
+  <div
+    v-if="!isFetched"
+    class="flex flex-col items-center justify-center h-full"
+  >
+    <UIcon
+      name="i-ant-design:loading-outlined"
+      class="animate-spin size-8 mb-2"
+    />
+    <div>Loading data …</div>
+  </div>
+  <div v-else>
     <WordCard
       v-for="card in sortedAndFilteredCards"
       :card="card"
