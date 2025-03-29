@@ -3,6 +3,8 @@ import { nextTick, useTemplateRef, watch } from 'vue'
 import TagSelector from '#/components/TagSelector.vue'
 import { Card, Tag } from '#/types'
 
+let cardBackup: Card | null = null
+
 const { editing, card } = defineProps<{
   editing: boolean
   card: Card
@@ -10,7 +12,12 @@ const { editing, card } = defineProps<{
 }>()
 
 defineExpose({ setFocusToOriginal })
-defineEmits<{ startEditing: []; stopEditing: []; delete: []; update: [Card] }>()
+const emit = defineEmits<{
+  startEditing: []
+  stopEditing: []
+  delete: []
+  update: [Card]
+}>()
 
 const originalInputElement = useTemplateRef('original')
 const translationInputElement = useTemplateRef('translation')
@@ -21,13 +28,20 @@ function setFocusToTranslation() {
 function setFocusToOriginal() {
   originalInputElement.value?.inputRef?.focus()
 }
-
+function cancelEditing() {
+  card.originalText = cardBackup?.originalText ?? ''
+  card.translatedText = cardBackup?.translatedText ?? ''
+  card.tags = cardBackup?.tags ?? []
+  emit('stopEditing')
+}
 watch(
   () => editing,
   async (newEditingValue) => {
-    if (newEditingValue !== true) return
-    await nextTick()
-    setFocusToOriginal()
+    if (newEditingValue === true) {
+      await nextTick()
+      setFocusToOriginal()
+      cardBackup = JSON.parse(JSON.stringify(card))
+    }
   },
   { immediate: true },
 )
@@ -53,14 +67,20 @@ watch(
       <TagSelector v-model="card.tags" :tags="tags" />
     </div>
     <template #footer>
-      <div class="flex gap-2 justify-end">
+      <div class="flex gap-2 justify-between">
         <UButton
           icon="i-ant-design:delete-twotone"
           label="Delete"
-          variant="outline"
+          variant="subtle"
           color="error"
-          class="rounded-lg"
           @click="$emit('delete')"
+        />
+        <div class="flex-1"></div>
+        <UButton
+          label="Cancel"
+          variant="ghost"
+          color="neutral"
+          @click="cancelEditing"
         />
         <UButton
           icon="i-ant-design:save-twotone"
