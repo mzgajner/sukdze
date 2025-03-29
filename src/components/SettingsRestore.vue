@@ -1,11 +1,19 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
 import useSukdzeData from '#/composables/use-sukdze-data'
+import {
+  createCard,
+  createTag,
+  getUserId,
+  Tag,
+  Card,
+  fetchTags,
+} from '#/api-client'
+import {} from '#/types'
 
-const sukdzeData = useSukdzeData()
+const { refresh } = useSukdzeData()
 
 const file = ref('')
-
 const fileInput = useTemplateRef('fileInput')
 
 function importFromFile() {
@@ -14,15 +22,36 @@ function importFromFile() {
 
   if (!file) return
 
-  if (
-    !confirm('Restoring a backup will overwrite existing data, are you sure?')
-  )
-    return
+  if (!confirm('Are you sure you want to proceed with the import?')) return
 
   const reader = new FileReader()
-  reader.onload = function () {
+  reader.onload = async function () {
     const data = JSON.parse(reader.result as string)
-    sukdzeData.value = data
+
+    for (let i = 0; i < data.tags.length; i++) {
+      await createTag({ label: data.tags[i].label, author: getUserId() })
+    }
+
+    const newTags = await fetchTags()
+
+    const getNewTagId = (oldId: string) => {
+      const oldTag = data.tags.find((tag: Tag) => tag.id === oldId)
+      const newTag = newTags.find((tag) => (tag.label = oldTag.label))
+      return newTag?.id
+    }
+
+    for (let i = 0; i < data.cards.length; i++) {
+      await createCard({
+        originalText: data.cards[i].originalText,
+        translatedText: data.cards[i].translatedText,
+        author: getUserId(),
+        tags: data.cards[i].tags
+          .map(getNewTagId)
+          .filter((tagId: string) => tagId !== undefined),
+      })
+    }
+
+    await refresh()
   }
   reader.readAsText(file)
 }

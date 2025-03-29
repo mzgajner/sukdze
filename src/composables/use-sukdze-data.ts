@@ -1,23 +1,33 @@
-import { type Ref } from 'vue'
-import { useStorage } from '@vueuse/core'
-import { type AppData } from '#/types'
+import { ref } from 'vue'
+import { Card, fetchCards, fetchTags, Tag } from '#/api-client'
 
-const appData: Ref<AppData> = useStorage(
-  'sukdzeData',
-  {
-    cards: {
-      'db7773c1-bf41-4f7d-b285-dbf35688c5ec': {
-        original: '숙제',
-        translation: 'Domača naloga',
-        tags: [],
-      },
-    },
-    tags: [],
-  },
-  undefined,
-  { deep: true },
-)
+const cards = ref<Card[]>([])
+const tags = ref<Tag[]>([])
+let isFetched = ref(false)
+let isFetching = ref(false)
+
+async function initialize() {
+  if (!isFetched.value && !isFetching.value) {
+    isFetching.value = true
+    await fetchCardsAndTags()
+    isFetched.value = true
+  }
+}
+
+async function fetchCardsAndTags() {
+  const cardFetching = fetchCards()
+  const tagFetching = fetchTags()
+  const [cardsResult, tagsResult] = await Promise.all([
+    cardFetching,
+    tagFetching,
+  ])
+
+  cards.value = cardsResult
+  tags.value = tagsResult
+}
 
 export default function () {
-  return appData
+  initialize()
+
+  return { cards, tags, isFetched, isFetching, refresh: fetchCardsAndTags }
 }

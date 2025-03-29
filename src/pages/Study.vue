@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti'
 
 defineEmits<{ quit: [] }>()
 
-const sukdzeData = useSukdzeData()
+const { cards } = useSukdzeData()
 
 function shuffleArray(array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -17,10 +17,11 @@ function shuffleArray(array: Array<any>) {
 }
 
 const shuffledCards = computed(() => {
-  const cardArray = Object.values(sukdzeData.value.cards) || []
+  const cardArray = JSON.parse(JSON.stringify(cards.value ?? []))
   shuffleArray(cardArray)
   return cardArray
 })
+
 const currentPosition = ref(0)
 const currentCard = computed(() => shuffledCards.value[currentPosition.value])
 const cardFlipped = ref(false)
@@ -54,6 +55,7 @@ function flipCard() {
     <div class="card flex items-center justify-center px-4 flex-1">
       <div
         :key="currentPosition"
+        v-if="currentCard"
         class="card-content text-3xl rounded-lg shadow-xl w-full max-w-[50vh] aspect-square transition-transform duration-300 relative bg-yellow-500/10"
         :class="{
           flip: cardFlipped,
@@ -61,14 +63,14 @@ function flipCard() {
         @click="flipCard"
       >
         <div
-          class="card-front absolute w-full h-full flex p-8 justify-center items-center"
+          class="card-front absolute w-full h-full flex p-8 justify-center items-center text-6xl"
         >
-          {{ currentCard.original }}
+          {{ currentCard.originalText }}
         </div>
         <div
           class="card-back absolute w-full h-full flex p-8 justify-center items-center text-6xl"
         >
-          {{ currentCard.translation }}
+          {{ currentCard.translatedText }}
         </div>
       </div>
     </div>

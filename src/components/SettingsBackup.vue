@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import useSukdzeData from '#/composables/use-sukdze-data'
 
-const sukdzeData = useSukdzeData()
+const { cards, tags } = useSukdzeData()
 
 function download() {
-  const file = new Blob([JSON.stringify(sukdzeData.value)], {
-    type: 'application/json',
-  })
+  const file = new Blob(
+    [JSON.stringify({ cards: cards.value, tags: tags.value })],
+    {
+      type: 'application/json',
+    },
+  )
   const a = document.createElement('a'),
     url = URL.createObjectURL(file)
   a.href = url

@@ -756,7 +756,7 @@ migrate((app) => {
       "viewRule": "id = @request.auth.id"
     },
     {
-      "createRule": "@request.auth.id != \"\" && author = @request.auth.id",
+      "createRule": "@request.auth.id != \"\" && @request.body.author = @request.auth.id",
       "deleteRule": "@request.auth.id != \"\" && author = @request.auth.id",
       "fields": [
         {
@@ -796,7 +796,7 @@ migrate((app) => {
           "pattern": "",
           "presentable": false,
           "primaryKey": false,
-          "required": true,
+          "required": false,
           "system": false,
           "type": "text"
         },
@@ -810,7 +810,7 @@ migrate((app) => {
           "pattern": "",
           "presentable": false,
           "primaryKey": false,
-          "required": true,
+          "required": false,
           "system": false,
           "type": "text"
         },
@@ -854,11 +854,11 @@ migrate((app) => {
       "name": "cards",
       "system": false,
       "type": "base",
-      "updateRule": "@request.auth.id != \"\" && author = @request.auth.id",
+      "updateRule": "@request.auth.id != \"\" && author = @request.auth.id &&\n(@request.body.author = \"\" || @request.body.author = @request.auth.id)",
       "viewRule": "@request.auth.id != \"\" && author = @request.auth.id"
     },
     {
-      "createRule": "@request.auth.id != \"\" && author = @request.auth.id",
+      "createRule": "@request.auth.id != \"\" && @request.body.author = @request.auth.id",
       "deleteRule": "@request.auth.id != \"\" && author = @request.auth.id",
       "fields": [
         {
@@ -929,7 +929,7 @@ migrate((app) => {
       "name": "tags",
       "system": false,
       "type": "base",
-      "updateRule": "@request.auth.id != \"\" && author = @request.auth.id",
+      "updateRule": "@request.auth.id != \"\" && author = @request.auth.id &&\n(@request.body.author = \"\" || @request.body.author = @request.auth.id)",
       "viewRule": "@request.auth.id != \"\" && author = @request.auth.id"
     }
   ];

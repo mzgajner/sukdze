@@ -2,35 +2,54 @@
 import { computed, ref } from 'vue'
 
 import WordCard from '#/components/WordCard.vue'
-import useSukdzeData from '#/composables/use-sukdze-data'
-import { Card } from '#/types'
 import TagSelector from '#/components/TagSelector.vue'
+import {
+  Card,
+  Tag,
+  deleteCard,
+  fetchCards,
+  fetchTags,
+  getUserId,
+  updateCard,
+} from '#/api-client'
+import { createCard } from '../api-client'
+import useSukdzeData from '#/composables/use-sukdze-data'
 
 const editingCard = ref<Card | null>(null)
 const filterTerm = ref('')
 const filterTags = ref<string[]>([])
-const sukdzeData = useSukdzeData()
 
-function addNewCard() {
-  const newCardId = crypto.randomUUID()
-  const newCard = { original: '', translation: '', tags: [] }
+const { cards, tags } = useSukdzeData()
 
-  sukdzeData.value.cards[newCardId] = newCard
+async function handleAddNewCard() {
+  const newCard = await createCard({
+    originalText: '',
+    translatedText: '',
+    tags: [],
+    author: getUserId(),
+  })
+  cards.value.push(newCard)
   editingCard.value = newCard
 }
 
-function deleteCard(card: Card) {
-  const cards = sukdzeData.value.cards
-  const idToDelete = Object.keys(cards).find((id) => cards[id] === card)!
-  delete cards[idToDelete]
+async function handleDeleteCard(card: Card) {
+  editingCard.value = null
+  const deleteIndex = cards.value.indexOf(card)
+  cards.value.splice(deleteIndex, 1)
+  await deleteCard(card.id)
+}
+
+async function handleSaveCard(card: Card) {
+  editingCard.value = null
+  await updateCard(card)
 }
 
 const sortedAndFilteredCards = computed(() =>
-  Object.values(sukdzeData.value.cards)
+  cards.value
     .sort((a, b) => {
-      if (a.translation === '') return 1
-      else if (b.translation === '') return -1
-      else return a.translation.localeCompare(b.translation)
+      if (a.translatedText === '') return 1
+      else if (b.translatedText === '') return -1
+      else return a.translatedText.localeCompare(b.translatedText)
     })
     .filter((card: Card) => {
       let termMatches = true
@@ -39,7 +58,7 @@ const sortedAndFilteredCards = computed(() =>
       if (filterTerm.value) {
         const term = filterTerm.value.toLocaleLowerCase()
         const word =
-          `${card.original} - ${card.translation}`.toLocaleLowerCase()
+          `${card.originalText} - ${card.translatedText}`.toLocaleLowerCase()
         termMatches = word.includes(term)
       }
 
@@ -78,7 +97,7 @@ const clearFilterTerm = () => (filterTerm.value = '')
         </template>
       </UInput>
       <div class="w-1/2">
-        <TagSelector v-model="filterTags" />
+        <TagSelector v-model="filterTags" :tags="tags" />
       </div>
     </div>
   </Teleport>
@@ -87,17 +106,19 @@ const clearFilterTerm = () => (filterTerm.value = '')
       v-for="card in sortedAndFilteredCards"
       :card="card"
       :editing="editingCard === card"
+      :tags="tags"
       @start-editing="editingCard = card"
-      @stop-editing="editingCard = null"
-      @delete="deleteCard(card)"
+      @stop-editing="handleSaveCard(card)"
+      @delete="handleDeleteCard(card)"
       class="w-full mb-2"
     />
     <UButton
       block
       size="xl"
       variant="subtle"
-      @click="addNewCard"
+      @click="handleAddNewCard"
       label="Add new card"
+      loading-auto
     />
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import useSukdzeData from '../composables/use-sukdze-data'
+import { Tag } from '#/api-client'
 
 const model = defineModel<string[]>()
-const sukdzeData = useSukdzeData()
+defineProps<{ tags: Tag[] }>()
 </script>
 
 <template>
@@ -13,7 +13,8 @@ const sukdzeData = useSukdzeData()
     icon="i-ant-design:tags-outlined"
     size="lg"
     class="w-full"
+    value-key="id"
     :search-input="false"
-    :items="sukdzeData.tags"
+    :items="tags"
   />
 </template>

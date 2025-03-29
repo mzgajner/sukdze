@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { nextTick, useTemplateRef, watch } from 'vue'
-import { Card } from '#/types.ts'
+import { Card, Tag } from '#/api-client'
 import TagSelector from '#/components/TagSelector.vue'
 
 const { editing, card } = defineProps<{
   editing: boolean
   card: Card
+  tags: Tag[]
 }>()
 
 defineExpose({ setFocusToOriginal })
@@ -38,18 +39,18 @@ watch(
       <UInput
         lang="sl-SI"
         ref="original"
-        v-model="card.original"
+        v-model="card.originalText"
         placeholder="Original"
         @keydown.enter="setFocusToTranslation"
       />
       <UInput
         lang="ko-KR"
         ref="translation"
-        v-model="card.translation"
+        v-model="card.translatedText"
         placeholder="Translation"
         @keydown.enter="$emit('stopEditing')"
       />
-      <TagSelector v-model="card.tags" />
+      <TagSelector v-model="card.tags" :tags="tags" />
     </div>
     <template #footer>
       <div class="flex gap-2 justify-end">
@@ -72,7 +73,7 @@ watch(
   <UCard v-else>
     <div class="flex">
       <div class="flex-1 place-self-center select-none">
-        {{ card.original }} - {{ card.translation }}
+        {{ card.originalText }} - {{ card.translatedText }}
       </div>
       <UButton
         icon="i-ant-design:edit-twotone"
