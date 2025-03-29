@@ -3,15 +3,7 @@ import { computed, ref } from 'vue'
 
 import WordCard from '#/components/WordCard.vue'
 import TagSelector from '#/components/TagSelector.vue'
-import {
-  Card,
-  Tag,
-  deleteCard,
-  fetchCards,
-  fetchTags,
-  getUserId,
-  updateCard,
-} from '#/api-client'
+import { Card, deleteCard, getUserId, updateCard } from '#/api-client'
 import { createCard } from '../api-client'
 import useSukdzeData from '#/composables/use-sukdze-data'
 
@@ -49,7 +41,7 @@ const sortedAndFilteredCards = computed(() =>
     .sort((a, b) => {
       if (a.translatedText === '') return 1
       else if (b.translatedText === '') return -1
-      else return a.translatedText.localeCompare(b.translatedText)
+      else return a.translatedText.localeCompare(b.translatedText, 'sl-SI')
     })
     .filter((card: Card) => {
       let termMatches = true
