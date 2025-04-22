@@ -25,6 +25,10 @@ import SettingsLogout from '#/components/SettingsLogout.vue'
       <SettingsTags />
     </SettingsWrapper>
 
+    <SettingsWrapper title="Update">
+      <SettingsUpdate />
+    </SettingsWrapper>
+
     <SettingsWrapper title="Logout">
       <SettingsLogout />
     </SettingsWrapper>
