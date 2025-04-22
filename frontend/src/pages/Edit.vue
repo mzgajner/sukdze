@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref } from 'vue'
 import { refDebounced } from '@vueuse/core'
 
 import WordCard from '#/components/WordCard.vue'
@@ -8,14 +8,15 @@ import { getUserId, createCard } from '#/api-client'
 import useSukdzeData from '#/composables/use-sukdze-data'
 import { Card } from '#/types'
 
-const editingCard = shallowRef<Card | null>(null)
-const filterTerm = shallowRef('')
+const editingMode = ref<'CREATE' | 'EDIT'>('EDIT')
+const editingCard = ref<Card | null>(null)
+const filterTerm = ref('')
 const debouncedFilterTerm = refDebounced(filterTerm, 500)
 const filterTags = ref<string[]>([])
 
 const { cards, tags, isFetched } = useSukdzeData()
 
-async function handleAddNewCard() {
+async function addNewCard() {
   const newCard = await createCard({
     originalText: '',
     translatedText: '',
@@ -23,16 +24,18 @@ async function handleAddNewCard() {
     author: getUserId(),
   })
   cards.value.push(newCard)
+  editingMode.value = 'CREATE'
   editingCard.value = newCard
+}
+
+function editCard(card: Card) {
+  editingMode.value = 'EDIT'
+  editingCard.value = card
 }
 
 const sortedAndFilteredCards = computed(() =>
   cards.value
-    .sort((a, b) => {
-      if (a.translatedText === '') return 1
-      else if (b.translatedText === '') return -1
-      else return a.translatedText.localeCompare(b.translatedText, 'sl-SI')
-    })
+    .sort((a, b) => a.translatedText.localeCompare(b.translatedText, 'sl-SI'))
     .filter((card: Card) => {
       let termMatches = true
       let tagsMatch = true
@@ -84,12 +87,16 @@ const sortedAndFilteredCards = computed(() =>
     <div>Loading data …</div>
   </div>
   <div v-else>
+    <WordEditingModal
+      v-if="editingCard !== null"
+      :mode="editingMode"
+      :card="editingCard"
+      @close="editingCard = null"
+    />
     <WordCard
       v-for="card in sortedAndFilteredCards"
       :card="card"
-      :editing="editingCard === card"
-      @open="editingCard = card"
-      @close="editingCard = null"
+      @edit="editCard(card)"
       class="w-full mb-2"
     />
     <UButton
@@ -98,7 +105,7 @@ const sortedAndFilteredCards = computed(() =>
       variant="subtle"
       label="Add new card"
       loading-auto
-      @click="handleAddNewCard"
+      @click="addNewCard"
     />
   </div>
 </template>
