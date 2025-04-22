@@ -61,7 +61,7 @@ const sortedAndFilteredCards = computed(() =>
 
 <template>
   <Teleport to="#top-nav">
-    <div class="px-4 py-2 bg-[var(--ui-bg-elevated)] flex gap-2">
+    <div class="flex gap-2">
       <UInput
         v-model="filterTerm"
         size="lg"
@@ -86,7 +86,7 @@ const sortedAndFilteredCards = computed(() =>
     />
     <div>Loading data …</div>
   </div>
-  <div v-else>
+  <div v-else class="pb-12">
     <WordEditingModal
       v-if="editingCard !== null"
       :mode="editingMode"
@@ -100,10 +100,9 @@ const sortedAndFilteredCards = computed(() =>
       class="w-full mb-2"
     />
     <UButton
-      block
+      class="rounded-full fixed bottom-4 right-4"
       size="xl"
-      variant="subtle"
-      label="Add new card"
+      icon="i-ant-design:plus-outlined"
       loading-auto
       @click="addNewCard"
     />

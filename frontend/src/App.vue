@@ -8,11 +8,16 @@ const route = useRoute()
 <template>
   <UApp>
     <main class="flex flex-col items-stretch justify-center h-screen">
-      <div id="top-nav" />
+      <div
+        v-if="!route.meta.hideNavigation"
+        class="flex p-2 sm:px-4 bg-[var(--ui-bg-elevated)]"
+      >
+        <div class="flex-1 pr-2" id="top-nav" />
+        <Navigation />
+      </div>
       <div class="p-4 flex-1 overflow-y-scroll">
         <RouterView />
       </div>
-      <Navigation v-if="!route.meta.hideNavigation" />
     </main>
   </UApp>
 </template>
