@@ -12,22 +12,22 @@
   },
   "dependencies": {
     "@nuxt/ui": "3.0.2",
-    "@vueuse/core": "^13.0.0",
+    "@vueuse/core": "^13.1.0",
     "canvas-confetti": "^1.9.3",
-    "pocketbase": "^0.25.2",
+    "pocketbase": "^0.26.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
     "@iconify-json/ant-design": "^1.2.5",
-    "@types/bun": "^1.2.8",
+    "@types/bun": "^1.2.10",
     "@vitejs/plugin-vue": "^5.2.3",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.1.2",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.5",
-    "vue-tsc": "^2.2.8"
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.2",
+    "vue-tsc": "^2.2.10"
   },
   "prettier": {
     "semi": false,

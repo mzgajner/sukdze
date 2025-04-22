@@ -11,7 +11,7 @@ FROM alpine:latest
 
 COPY --from=frontend-build /usr/src/sukdze-client/dist /pb/pb_public
 
-ARG PB_VERSION=0.26.5
+ARG PB_VERSION=0.27.1
 
 RUN apk add --no-cache \
     unzip \
