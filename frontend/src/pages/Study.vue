@@ -52,23 +52,21 @@ function flipCard() {
 
 <template>
   <div class="flex flex-col select-none h-full">
-    <div class="card flex items-center justify-center px-4 flex-1">
+    <div class="perspective-[800px] flex items-center justify-center px-4 flex-1">
       <div
         :key="currentPosition"
         v-if="currentCard"
-        class="card-content text-3xl rounded-lg shadow-xl w-full max-w-[50vh] aspect-square transition-transform duration-300 relative bg-yellow-500/10"
-        :class="{
-          flip: cardFlipped,
-        }"
+        class="transform-3d text-3xl rounded-lg shadow-xl w-full max-w-[50vh] aspect-square transition-transform duration-300 relative bg-yellow-500/10"
+        :class="{ 'rotate-y-180': cardFlipped }"
         @click="flipCard"
       >
         <div
-          class="card-front absolute w-full h-full flex p-8 justify-center items-center text-6xl"
+          class="absolute w-full h-full flex p-8 justify-center items-center text-6xl backface-hidden rotate-x-0"
         >
           {{ currentCard.originalText }}
         </div>
         <div
-          class="card-back absolute w-full h-full flex p-8 justify-center items-center text-6xl"
+          class="absolute w-full h-full flex p-8 justify-center items-center text-6xl backface-hidden rotate-y-180 rotate-x-0 z-10"
         >
           {{ currentCard.translatedText }}
         </div>
@@ -94,26 +92,3 @@ function flipCard() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.card {
-  perspective: 800px;
-}
-
-.card-content {
-  transform-style: preserve-3d;
-}
-
-.card-back {
-  transform: rotateY(0.5turn);
-}
-
-.card-front,
-.card-back {
-  backface-visibility: hidden;
-}
-
-.flip {
-  transform: rotateY(0.5turn);
-}
-</style>
