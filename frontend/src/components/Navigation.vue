@@ -19,7 +19,7 @@ const items = [
 </script>
 
 <template>
-  <UDropdownMenu :items="items" variant="link">
+  <UDropdownMenu :items="items" variant="link" size="xl">
     <UButton
       icon="i-ant-design:menu-outlined"
       color="primary"
