@@ -6,12 +6,12 @@ defineEmits<{ edit: [] }>()
 </script>
 
 <template>
-  <div class="flex border-b border-(--ui-border)">
+  <div class="flex border-b border-default">
     <div class="flex-1 place-self-center select-none">
       {{ card.originalText }}
       <UIcon
         name="i-ant-design:arrow-right-outlined"
-        class="text-(--ui-text-dimmed) text-sm inline-block mb-1 mx-0.5"
+        class="text-dimmed text-sm inline-block mb-1 mx-0.5"
       />
       {{ card.translatedText }}
     </div>
